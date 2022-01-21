@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Exchange Rates</title>
+</head>
+<body>
+  <a href="{% url 'home' %}">Return to homepage</a>
+  <div id="container"></div>
+  <script src="https://code.highcharts.com/highcharts.src.js"></script>
+  <script>
+      var _USD_series = JSON.parse("{{ USD_series|safe }}")
+      var _JPY_series = JSON.parse("{{ JPY_series|safe }}")
+      var _BRL_series = JSON.parse("{{ BRL_series|safe }}")
+</script>
+  <script>
+
+      Highcharts.chart('container', {
+
+title: {
+    text: 'Currencies exchange rates on last five days'
+},
+
+subtitle: {
+    text: 'Source: vatcomply.com'
+},
+
+yAxis: {
+    title: {
+        text: 'Currencies Exchange Rates'
+    }
+},
+
+xAxis: {
+    accessibility: {
+        rangeDescription: 'Last five days'
+    }
+},
+
+legend: {
+    layout: 'vertical',
+    align: 'right',
+    verticalAlign: 'middle'
+},
+
+plotOptions: {
+    series: {
+        label: {
+            connectorAllowed: false
+        },
+        pointStart: 2010
+    }
+},
+
+series: [{
+    name: 'USD',
+    data: _USD_series
+}, {
+    name: 'EUR',
+    data: [1,1,1,1,1]
+}, {
+    name: 'JPY',
+    data: _JPY_series
+}, {
+    name: 'BRL',
+    data: _BRL_series
+}],
+
+responsive: {
+    rules: [{
+        condition: {
+            maxWidth: 3
+        },
+        chartOptions: {
+            legend: {
+                layout: 'horizontal',
+                align: 'center',
+                verticalAlign: 'bottom'
+            }
+        }
+    }]
+}
+
+});
+  </script>
+</body>
+</html>
