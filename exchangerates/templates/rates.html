@@ -3,19 +3,32 @@
 <head>
   <meta charset="utf-8">
   <title>Exchange Rates</title>
+  <link rel="shortcut icon" type="image/x-icon" href="images/favicon.icon"/>
+
 </head>
 <body>
-  <a href="{% url 'home' %}">Return to homepage</a>
   <div id="container"></div>
   <script src="https://code.highcharts.com/highcharts.src.js"></script>
+  <script src="https://code.highcharts.com/stock/highstock.js"></script>
+  <script src="https://code.highcharts.com/stock/modules/data.js"></script>
+  <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+ 
   <script>
       var _USD_series = JSON.parse("{{ USD_series|safe }}")
       var _JPY_series = JSON.parse("{{ JPY_series|safe }}")
       var _BRL_series = JSON.parse("{{ BRL_series|safe }}")
+      var year = Number(new Date().getFullYear())
+      var month =  (new Date().getMonth())
+      let day = Number(new Date().getDate()) - 5
 </script>
   <script>
-
+      
       Highcharts.chart('container', {
+
+rangeSelector: {
+            selected: 1
+        },          
 
 title: {
     text: 'Currencies exchange rates on last five days'
@@ -32,9 +45,18 @@ yAxis: {
 },
 
 xAxis: {
+    tickInterval: 24 * 3600 * 1000,
+    type: 'datetime',
+        labels: {
+            format: '{value:%Y-%m-%d}',
+            rotation: 30,
+            align: 'left'
+        },
+
     accessibility: {
         rangeDescription: 'Last five days'
     }
+
 },
 
 legend: {
@@ -48,7 +70,10 @@ plotOptions: {
         label: {
             connectorAllowed: false
         },
-        pointStart: 2010
+        pointStart: Date.UTC(year, month, day),
+        pointInterval: 1,
+        pointIntervalUnit: 'day',
+
     }
 },
 
