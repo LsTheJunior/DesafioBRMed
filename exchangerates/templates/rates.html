@@ -15,23 +15,20 @@
   <script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
  
   <script>
-      var _USD_series = JSON.parse("{{ USD_series|safe }}")
+      var _EUR_series = JSON.parse("{{ EUR_series|safe }}")
       var _JPY_series = JSON.parse("{{ JPY_series|safe }}")
       var _BRL_series = JSON.parse("{{ BRL_series|safe }}")
-      var year = Number(new Date().getFullYear())
-      var month =  (new Date().getMonth())
-      let day = Number(new Date().getDate()) - 5
+      var _Dates_series = "{{ Dates_series|safe }}"
+
+
 </script>
   <script>
-      
       Highcharts.chart('container', {
 
-rangeSelector: {
-            selected: 1
-        },          
+      
 
 title: {
-    text: 'Currencies exchange rates on last five days'
+    text: 'Currencies exchange rates on last five business days'
 },
 
 subtitle: {
@@ -40,21 +37,18 @@ subtitle: {
 
 yAxis: {
     title: {
-        text: 'Currencies Exchange Rates'
+        text: 'Exchange Rates based on USD'
     }
 },
 
 xAxis: {
-    tickInterval: 24 * 3600 * 1000,
     type: 'datetime',
-        labels: {
-            format: '{value:%Y-%m-%d}',
-            rotation: 30,
-            align: 'left'
-        },
+    categories: [String(_Dates_series.slice(2,12)),String(_Dates_series.slice(16,26)),String(_Dates_series.slice(30,40)),String(_Dates_series.slice(44,54)),String(_Dates_series.slice(58,68))],
+    uniqueNames: true,
+    label: {format : '{value:%Y-%m-%d'},
 
     accessibility: {
-        rangeDescription: 'Last five days'
+        rangeDescription: 'Last five business days'
     }
 
 },
@@ -70,19 +64,12 @@ plotOptions: {
         label: {
             connectorAllowed: false
         },
-        pointStart: Date.UTC(year, month, day),
-        pointInterval: 1,
-        pointIntervalUnit: 'day',
-
     }
 },
 
 series: [{
-    name: 'USD',
-    data: _USD_series
-}, {
     name: 'EUR',
-    data: [1,1,1,1,1]
+    data: _EUR_series
 }, {
     name: 'JPY',
     data: _JPY_series
@@ -108,5 +95,6 @@ responsive: {
 
 });
   </script>
+  <p></p>
 </body>
 </html>
