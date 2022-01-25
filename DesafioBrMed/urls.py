@@ -21,5 +21,5 @@ from exchangerates.views import  home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('exchangerates/', include('exchangerates.urls')),
+    path('', include('exchangerates.urls')),
 ]
